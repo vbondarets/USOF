@@ -1,3 +1,4 @@
 {
-    "SECRET_KEY": "VBondaretsUsofBackEndKiptilDedaPutinaVPechke"
+    "SECRET_KEY": "VBondaretsUsofBackEndKiptilDedaPutinaVPechke",
+    "SECRET_KEY_FOR_EMAIL": "VBondaretsUsofBackEndLomalBiPutinuNogi"
 }

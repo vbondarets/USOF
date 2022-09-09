@@ -2,7 +2,6 @@ const ApiError = require("../error/ApiError");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
-const Basket = require('../models/BasketModel');
 const secureConfig = require('../secureConfig.json');
 
 function jwtGenerator(id, login, email, role){
@@ -56,7 +55,7 @@ class UserController{
             }
             else if(resp == "Created"){
                 const token = jwtGenerator(user.id, user.login, user.email, user.role);
-                return res.json({token});
+                return res.json({token: token});
             }
             else{
                 return next(ApiError.internal('Unknown err: '+ resp));
@@ -100,7 +99,7 @@ class UserController{
     async deleteUserById(req, res, next){
         let{id} = req.params;
         const user = new User();
-        user.getUserById(id).then(resp =>{
+        user.deleteUserById(id).then(resp =>{
             if(resp != "OK"){
                 return next(ApiError.conflict('Resp: '+ resp));
             }

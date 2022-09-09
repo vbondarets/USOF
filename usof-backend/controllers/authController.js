@@ -1,9 +1,5 @@
 const ApiError = require("../error/ApiError");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Auth = require('../models/AuthModel');
-const Basket = require('../models/BasketModel');
-const secureConfig = require('../secureConfig.json');
+const User = require('../models/UserModel');
 
 function jwtGenerator(id, login, email, role){
     const token = jwt.sign(
@@ -29,7 +25,7 @@ class AuthController{
             }
             else if(resp == "Created"){
                 const token = jwtGenerator(user.id, user.login, user.email, user.role);
-                return res.json({token});
+                return res.json({token: token});
             }
             else{
                 return next(ApiError.internal('Unknown err: '+ resp));
@@ -49,7 +45,7 @@ class AuthController{
                     return next(ApiError.conflict('Incorrect password'));
                 }
                 const token = jwtGenerator(user.id, user.login, user.email, user.role);
-                return res.json({token});
+                return res.json({token: token});
             }
             else{
                 console.log(resp);
@@ -57,6 +53,48 @@ class AuthController{
             }
         });
     }
+    async logout(req, res, next){
+        let token = "aboba";
+        return res.json({token: token});
+    };
+    async resetPassword(req, res, next){
+        let {id, login, email} = req.body;
+        const user = new User();
+        user.find(id, login, email).then(resp =>{
+            if(resp == 'NOT FOUND'){
+                return next(ApiError.badRequest(resp));
+            }
+            else{
+                //otravka email po sgenerirovannoy ssilke
+            }
+        });
+    };
+    async resetPasswordAuntification(req, res, next){
+        let {token} = req.params; 
+        let {password} = req.body; 
+        const decoded = jwt.verify(token, secureConfig.SECRET_KEY_FOR_EMAIL);
+        const user = new User();
+        let {id, login, email} = decoded;
+        user.find(id, login, email).then(resp =>{
+            if(resp == 'NOT FOUND'){
+                return next(ApiError.badRequest(resp));
+            }
+            else{
+                const hashedPassword = await bcrypt.hash(password, 10);
+                user.resetPassword(id, hashedPassword).then(resp => {
+                    if(resp == 'OK'){
+                        return res.json({res: "OK"});;
+                    }
+                    else{
+                        console.log(resp);
+                        return next(ApiError.internal('Unknown error'));
+                    }
+                });
+            }
+        });
+
+    };
+
 }
 
 module.exports = new AuthController();

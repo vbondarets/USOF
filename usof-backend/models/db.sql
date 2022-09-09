@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS post(
     author_id INT NOT NULl,
     title TINYTEXT NOT NULL,
     publishDate DATETIME NOT NULL,
-    status TINYINT NOT NULL,
+    status TINYINT DEFAULT 1,
     content MEDIUMTEXT NOT NULL,
     category_id INT NOT NULL
 );
@@ -34,11 +34,11 @@ CREATE TABLE IF NOT EXISTS comment(
     publishDate DATETIME NOT NULL,
     content MEDIUMTEXT NOT NULL
 );
-CREATE TABLE IF NOT EXISTS comment(
+CREATE TABLE IF NOT EXISTS like(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     authorId INT NOT NULL,
     publishDate DATETIME NOT NULL,
-    postId INT,
-    commentId INT,
-    type TINYINT NOT NULL
+    postId INT DEFAULT 0,
+    commentId INT DEFAULT 0,
+    type TINYINT DEFAULT 1
 );
