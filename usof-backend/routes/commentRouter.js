@@ -5,6 +5,7 @@ const checkRole = require('../middleware/checkRoleMiddleware');
 
 router.get('/comments/:id', commentController.getCommentById);
 router.get('/comments/:id/like', commentController.getCommentLikes);
+router.post('/comments', commentController.createComment);
 router.post('/comments/:id/like', commentController.createCommentLike);
 router.patch('/comments/:id', commentController.changeCommentById);
 router.delete('/comments/:id', commentController.deleteCommentById);

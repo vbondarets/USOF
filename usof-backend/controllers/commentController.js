@@ -7,7 +7,7 @@ class CommentController{
     async getCommentById(req, res, next){
         let { id } = req.params;
         let comment = new Comment();
-        comment.getAll(id).then(resp =>{
+        comment.getById(id).then(resp =>{
             if (resp == "NOT FOUND") {
                 return next(ApiError.badRequest(resp));
             }
@@ -33,6 +33,18 @@ class CommentController{
         let {authorId, publishDate, commentId, type} = req.body
         let like = new Like(authorId, publishDate, id, commentId, type);
         like.create().then(resp =>{
+            if (resp == "Created") {
+                return res.json({ resp: resp });
+            }
+            else {
+                return next(ApiError.internal('Unknown err: '+ resp));
+            }
+        });
+    }
+    async createComment(req, res, next){
+        let {postId, authorId, publishDate, content}= req.body;
+        let comment = new Comment(postId, authorId, publishDate, content);
+        comment.create().then(resp =>{
             if (resp == "Created") {
                 return res.json({ resp: resp });
             }
@@ -70,7 +82,7 @@ class CommentController{
         let { id } = req.params;
         let {like_id} = req.body;
         let comment = new Comment();
-        comment.deleteLikeById(id, like_id).then(resp =>{
+        comment.delete(like_id).then(resp =>{
             if (resp == "Err") {
                 return next(ApiError.badRequest('Uncorrect Id: '+ resp));
             }

@@ -16,7 +16,7 @@ function jwtGenerator(id, login, email, role){
 class UserController{
     async check(req, res, next){
         const token = jwtGenerator(req.user.id, req.user.login, req.user.email, req.user.role);
-        return res.json({user: req.user , token: token});
+        return res.json({token: token});
     }
     async getAll(req, res, next){
         const user = new User();
@@ -42,12 +42,15 @@ class UserController{
         });
     }
     async createUser(req, res, next){
-        let {login, email, password, role, fullName, profileImg} = req.body;
+        let {login, email, password, role, fullName} = req.body;
+        const {img} = req.files;
+        let profileImg = uuid.v4()+ ".jpg";
+        img.mv(path.resolve(__dirname, "..", "static", profileImg));
         if (!login || !email || !password || fullName){
             return next(ApiError.conflict('Missing Data'));
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User(login, email, fullName, hashedPassword, role, profileImg);
+        const user = new User(fullName, login, email, hashedPassword, profileImg, role);
         user.create().then(resp =>{
             if(resp != "Created"){
                 const error = resp.indexOf('login') != -1 ? 'login' : 'email';
@@ -63,7 +66,10 @@ class UserController{
         });
     }
     async changeAvatar(req, res, next){
-        let {id, profileImg} = req.body;
+        let {id} = req.body;
+        const {img} = req.files;
+        let profileImg = uuid.v4()+ ".jpg";
+        img.mv(path.resolve(__dirname, "..", "static", profileImg));
         const user = new User();
         user.changeAvatar(id, profileImg).then(resp =>{
             if(resp == "NOT FOUND"){
@@ -75,17 +81,16 @@ class UserController{
         });
     }
     async changeUserById(req, res, next){
-        let {login, email, password, role, fullName, profileImg} = req.body;
+        let {login, email, password, role, fullName, profileImg, rating} = req.body;
         let{id} = req.params;
-        if (!login || !email || !password || fullName){
+        if (!login || !email || !fullName){
             return next(ApiError.conflict('Missing Data'));
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User(login, email, fullName, hashedPassword, role, profileImg);
+        const user = new User(fullName, login, email, hashedPassword, profileImg, role, rating);
         user.changeUserById(id).then(resp =>{
             if(resp != "Changed"){
-                const error = resp.indexOf('login') != -1 ? 'login' : 'email';
-                return next(ApiError.conflict(error + ' already exist'));
+                return next(ApiError.badRequest("Err: " + resp));
             }
             else if(resp == "Changed"){
                 const token = jwtGenerator(user.id, user.login, user.email, user.role);

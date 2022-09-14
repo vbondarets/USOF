@@ -93,7 +93,7 @@ class PostController {
         let { id } = req.params;
         let {authorId, publishDate, commentId, type} = req.body;
         let like = new Like(authorId, publishDate, id, commentId, type);
-        like.create().then(resp => {
+        like.create(id).then(resp => {
             if (resp == "Created") {
                 return res.json({resp: resp});
             }
@@ -131,7 +131,7 @@ class PostController {
         let {id} = req.params;
         let {like_id} = req.body;
         let like = new Like();
-        like.delete(post_id, like_id).then(resp => {
+        like.delete(like_id).then(resp => {
             if (resp == "Deleted") {
                 return res.json({resp: resp});
             }
