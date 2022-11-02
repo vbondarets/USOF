@@ -1,0 +1,23 @@
+.comment{
+    display: flex;
+    border: 1px solid black;
+    min-width: 100px;
+    width: fit-content;
+    max-width: 90%;
+    height: fit-content;
+    padding: 5px;
+    margin-top: 2px;
+}
+.commenList{
+    margin-top: 10px;
+    /* border-top: 1px solid black; */
+    width: 90vw;
+    min-width: 120px;
+    border-left: 3px solid rgba(0, 0, 0, 0.821);
+    padding: 0px 4px;
+    
+}
+.commentHeader{
+    margin-top: 20px;
+    border-top: 1px solid black;
+}

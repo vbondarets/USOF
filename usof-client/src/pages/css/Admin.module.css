@@ -1,0 +1,27 @@
+.adminRoot{
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    width: 1200px;
+    height: fit-content;
+    flex-direction: row;
+}
+.categoriesList{
+    margin-top: 4px;
+    border: 1px solid black;
+    margin-left: 10px;
+    height: fit-content;
+}
+.usersList{
+    margin-top: 4px;
+    padding: 4px;
+    border: 1px solid black;
+    margin-left: 10px;
+    height: fit-content;
+}
+.categoryForm{
+    margin-top: 4px;
+    padding: 8px;
+    margin-left: auto;
+    border: 1px solid black;
+}

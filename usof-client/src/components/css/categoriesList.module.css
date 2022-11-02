@@ -1,0 +1,6 @@
+.category{
+    margin: 4px;
+    padding: 4px;
+    border: 1px solid black;
+    height: fit-content;
+}

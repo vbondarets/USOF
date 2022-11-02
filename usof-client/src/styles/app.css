@@ -1,0 +1,71 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.App {
+    width: 1200px;
+}
+
+.post {
+    display: flex;
+    padding: 15px;
+    border: 2px black solid;
+    margin-top: 15px;
+    /* width: 40%; */
+    /* justify-content: space-between; */
+    align-items: center;
+}
+.post__btns{
+    display: flex;
+}
+
+.post__content {
+    display: block;
+}
+
+h1 {
+    text-align: center;
+}
+
+.post-enter {
+    transform: translateX(-350px);
+}
+
+.post-enter-active {
+    transform: translateX(0px);
+    transition: all 500ms ease-in;
+}
+
+.post-exit {
+    opacity: 1;
+}
+
+.post-exit-active {
+    transform: translateX(-350px);
+    transition: all 500ms ease-in;
+}
+.loaderDiv{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.page__wrapper{
+    margin-top: 10px;
+    display: flex;
+}
+.page{
+    padding: 2px 4px;
+}
+.page__current{
+    border: 2px solid black;
+    font-weight: bold;
+}
